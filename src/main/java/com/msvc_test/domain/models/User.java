@@ -22,6 +22,6 @@ public class User {
     private String password;
     private List<Rol> roles;
     private LocalDate createdAt;
-    private boolean isAdmin;
+    private boolean admin;
 
 }

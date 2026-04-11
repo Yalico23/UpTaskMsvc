@@ -20,6 +20,7 @@ public class RolEntity {
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-    @Column(name = "type_rols", nullable = false)
+    @Enumerated(EnumType.STRING) // Store the enum as a string in the database, otherswise it will store the ordinal (integer) value which can lead to issues if the enum order changes
+    @Column(name = "type_rols", nullable = false, length = 50)
     private TypeRols typeRols;
 }

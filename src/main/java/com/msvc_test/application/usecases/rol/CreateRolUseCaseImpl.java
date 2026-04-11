@@ -1,4 +1,4 @@
-package com.msvc_test.application.usecases;
+package com.msvc_test.application.usecases.rol;
 
 import com.msvc_test.domain.models.Rol;
 import com.msvc_test.domain.port.input.CreateRolUseCase;

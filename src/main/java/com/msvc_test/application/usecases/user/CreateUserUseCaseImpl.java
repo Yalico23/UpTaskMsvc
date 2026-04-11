@@ -1,4 +1,4 @@
-package com.msvc_test.application.usecases;
+package com.msvc_test.application.usecases.user;
 
 import com.msvc_test.domain.models.Rol;
 import com.msvc_test.domain.models.User;
@@ -8,7 +8,6 @@ import com.msvc_test.domain.port.output.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,6 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
             throw new IllegalArgumentException("User with email " + user.getEmail() + " already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreatedAt(LocalDate.now());
 
         Rol rol = rolRepositoryPort.findByTypeRols(user.isAdmin() ? ADMIN : WORKER).orElseThrow(()-> new RuntimeException("Rol not found"));
         user.setRoles(List.of(rol));

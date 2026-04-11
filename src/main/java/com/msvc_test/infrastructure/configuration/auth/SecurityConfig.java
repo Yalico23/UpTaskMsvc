@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 @Configuration
-@EnableMethodSecurity // Habilita la seguridad a nivel de método, permitiendo usar anotaciones como @PreAuthorize
+@EnableMethodSecurity() // Habilita la seguridad a nivel de método, permitiendo usar anotaciones como @PreAuthorize
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -53,14 +53,14 @@ public class SecurityConfig {
      *
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login")
                         .permitAll()
-                        .requestMatchers("/api/rols/**", "/api/rols","/api/users/**", "/api/users")
+                        .requestMatchers("/api/rols/**", "/api/rols", "/api/users/**", "/api/users")
                         .permitAll()
-                        .requestMatchers("/swagger-ui/**","/v3/api-docs/**","/swagger-ui.html","/swagger-resources/**","/webjars/**")
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -72,15 +72,18 @@ public class SecurityConfig {
                 .sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));// Configura la gestión de sesiones para que sea sin estado, lo que es típico en aplicaciones RESTful donde se utilizan tokens (como JWT) para la autenticación en lugar de sesiones tradicionales.
 
+
         return http.build();
     }
 
     /**
      * Configura la fuente de configuración de CORS para la aplicación, permitiendo solicitudes desde cualquier origen, con métodos HTTP específicos y encabezados permitidos.
      * Esta configuración es esencial para permitir que la aplicación sea accesible desde diferentes dominios, lo que es común en aplicaciones web modernas donde el frontend y el backend pueden estar alojados en diferentes servidores.
+     *
      * @return CorsConfigurationSource - La fuente de configuración de CORS configurada para la aplicación.
      * @throws Exception - Si ocurre un error al configurar la fuente de configuración de CORS.
-     * */
+     *
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -99,9 +102,11 @@ public class SecurityConfig {
      * Registra un filtro de CORS utilizando la configuración definida en el método corsConfigurationSource(), lo que permite controlar el comportamiento de CORS para las solicitudes entrantes.
      * Este filtro se asegura de que las solicitudes CORS sean manejadas correctamente, permitiendo
      * que la aplicación sea accesible desde diferentes dominios, lo que es esencial para aplicaciones web modernas donde el frontend y el backend pueden estar alojados en diferentes servidores.
+     *
      * @return FilterRegistrationBean<CorsFilter> - El bean de registro del filtro de CORS configurado para la aplicación.
      * @throws Exception - Si ocurre un error al registrar el filtro de CORS.
-     * */
+     *
+     */
     @Bean
     FilterRegistrationBean<CorsFilter> corsFilter() {
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(corsConfigurationSource())); // Registra el filtro de CORS utilizando la configuración definida en el método corsConfigurationSource(), lo que permite controlar el comportamiento de CORS para las solicitudes entrantes.

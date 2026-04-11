@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msvc_test.infrastructure.configuration.auth.SimpleGrantedAuthorityJsonCreator;
 import com.msvc_test.infrastructure.configuration.auth.TokenJwtConfig;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,9 +33,9 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String header = request.getHeader(TokenJwtConfig.HEADER_AUTHORIZATION);
+        String header = request.getHeader(HEADER_AUTHORIZATION);
 
-        if (header == null || !header.startsWith(TokenJwtConfig.PREFIX_TOKEN)) {
+        if (header == null || !header.startsWith(PREFIX_TOKEN)) {
             chain.doFilter(request, response);
             return;
         }
@@ -49,7 +50,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
                     .getPayload();
 
             String email = claims.getSubject();
-            Object roles = claims.get("roles");
+            Object roles = claims.get("authorities");
 
             Collection<? extends GrantedAuthority> authorities = Arrays.asList(new ObjectMapper()
                     .addMixIn(SimpleGrantedAuthority.class,SimpleGrantedAuthorityJsonCreator.class)
@@ -59,7 +60,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request,response);
 
-        } catch (Exception e) {
+        } catch (JwtException e) {
             Map<String, String> body = new HashMap<>();
             body.put("error", e.getMessage());
             body.put("message", "Token is not valid");
@@ -67,7 +68,5 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(CONTENT_TYPE);
         }
-
-        chain.doFilter(request, response);
     }
 }
