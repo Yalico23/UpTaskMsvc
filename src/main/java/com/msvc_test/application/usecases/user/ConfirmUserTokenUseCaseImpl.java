@@ -25,7 +25,6 @@ public class ConfirmUserTokenUseCaseImpl implements ConfirmUserTokenUseCase {
 
 
 
-
     @Override
     public User confirmTokenUser(String token) {
         if(Objects.isNull(token)){
