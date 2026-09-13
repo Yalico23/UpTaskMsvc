@@ -1,7 +1,7 @@
 package com.msvc_test.application.usecases.rol;
 
 import com.msvc_test.domain.models.Rol;
-import com.msvc_test.domain.port.input.CreateRolUseCase;
+import com.msvc_test.domain.port.input.rol.CreateRolUseCase;
 import com.msvc_test.domain.port.output.RolRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.msvc_test.application.usecases.task;
 import com.msvc_test.domain.exceptions.ProjectNotFoundException;
 import com.msvc_test.domain.models.Project;
 import com.msvc_test.domain.models.Task;
-import com.msvc_test.domain.port.input.CreateTaskUseCase;
+import com.msvc_test.domain.port.input.task.CreateTaskUseCase;
 import com.msvc_test.domain.port.output.ProjectRepositoryPort;
 import com.msvc_test.domain.port.output.TaskRepositoryPort;
 import lombok.RequiredArgsConstructor;

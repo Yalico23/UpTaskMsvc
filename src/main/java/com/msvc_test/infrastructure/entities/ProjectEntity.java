@@ -32,4 +32,7 @@ public class ProjectEntity {
             fetch = FetchType.LAZY // Use LAZY fetching to avoid loading tasks when not needed
     )
     private List<TaskEntity> tasks;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // Foreign key to User
+    private UserEntity user;
 }

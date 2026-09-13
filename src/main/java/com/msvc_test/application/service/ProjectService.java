@@ -1,14 +1,15 @@
 package com.msvc_test.application.service;
 
 import com.msvc_test.domain.models.Project;
-import com.msvc_test.domain.port.input.CreateProjectUseCase;
-import com.msvc_test.domain.port.input.DeleteProjectUseCase;
-import com.msvc_test.domain.port.input.ListProjectsUseCase;
-import com.msvc_test.domain.port.input.UpdateProjectUseCase;
+import com.msvc_test.domain.port.input.project.CreateProjectUseCase;
+import com.msvc_test.domain.port.input.project.DeleteProjectUseCase;
+import com.msvc_test.domain.port.input.project.ListProjectsUseCase;
+import com.msvc_test.domain.port.input.project.UpdateProjectUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProjectService implements CreateProjectUseCase, ListProjectsUseCase, DeleteProjectUseCase, UpdateProjectUseCase {
@@ -35,6 +36,12 @@ public class ProjectService implements CreateProjectUseCase, ListProjectsUseCase
     @Override
     public List<Project> listProjects() {
         return listProjectsUseCase.listProjects();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Project> listProjectsByUserId() {
+        return listProjectsUseCase.listProjectsByUserId();
     }
 
     @Transactional(readOnly = true)

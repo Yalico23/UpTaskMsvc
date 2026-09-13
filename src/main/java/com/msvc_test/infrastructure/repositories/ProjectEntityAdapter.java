@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -40,6 +41,11 @@ public class ProjectEntityAdapter implements ProjectRepositoryPort {
     @Override
     public List<Project> findAll() {
         return mapper.toModel(repository.findAll());
+    }
+
+    @Override
+    public List<Project> findAllByUserId(UUID userId) {
+        return mapper.toModel(repository.findAllByUserId(userId));
     }
 
     @Override

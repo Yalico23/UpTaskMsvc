@@ -24,7 +24,7 @@ public class ProjectController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
-    public ResponseEntity<Project> responseEntity(@Valid @RequestBody ProjectDtoCreate project){
+    public ResponseEntity<Project> createProject(@Valid @RequestBody ProjectDtoCreate project){
         return ResponseEntity.status(HttpStatus.CREATED).body(projectService.createProject(projectMapper.toModel(project)));
     }
 
@@ -32,6 +32,12 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> listProjects(){
         return ResponseEntity.ok(projectService.listProjects());
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/userId")
+    public ResponseEntity<List<Project>> listProjectsByUserId(){
+        return ResponseEntity.ok(projectService.listProjectsByUserId());
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,9 +41,23 @@ public class UserEntity {
     private Set<RolEntity> roles;
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDate createdAt;
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
+    private boolean active;
+    @Column(name = "token", length = 6)
+    private String token; // en póstgre seria
+    @Column(name = "token_expiration")
+    private Date tokenExpiration; // en postgre seria timestamp
+    @OneToMany(
+            mappedBy = "user", // Specify the field in ProjectEntity that owns the relationship
+            cascade = CascadeType.ALL, // Ensure projects are persisted when a user is saved
+            orphanRemoval = true, // Ensure projects are removed when a user is deleted
+            fetch = FetchType.LAZY // Use LAZY fetching to avoid loading projects when not needed
+    )
+    private List<ProjectEntity> projects;
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
     }
 }

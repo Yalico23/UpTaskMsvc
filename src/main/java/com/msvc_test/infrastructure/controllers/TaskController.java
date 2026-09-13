@@ -2,8 +2,10 @@ package com.msvc_test.infrastructure.controllers;
 
 import com.msvc_test.application.service.TaskService;
 import com.msvc_test.domain.models.Task;
+import com.msvc_test.domain.models.TaskStatus;
 import com.msvc_test.infrastructure.dto.request.TaskDtoCreate;
 import com.msvc_test.infrastructure.dto.request.TaskDtoUpdate;
+import com.msvc_test.infrastructure.dto.request.TaskStatusDtoUpdate;
 import com.msvc_test.infrastructure.dto.response.TaskDtoCreateResponse;
 import com.msvc_test.infrastructure.dto.response.TaskDtoListResponse;
 import com.msvc_test.infrastructure.mapper.TaskMapper;
@@ -55,6 +57,12 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/taskstatus")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Task> updateTaskStatus(@Valid @RequestBody TaskStatusDtoUpdate taskStatus) {
+        return ResponseEntity.ok(taskService.updateStatus(taskStatus.getId(),taskStatus.getTaskStatus()));
     }
 
 }

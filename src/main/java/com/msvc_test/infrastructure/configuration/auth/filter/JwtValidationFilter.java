@@ -1,6 +1,7 @@
 package com.msvc_test.infrastructure.configuration.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.msvc_test.infrastructure.configuration.auth.CustomUserDetails;
 import com.msvc_test.infrastructure.configuration.auth.SimpleGrantedAuthorityJsonCreator;
 import com.msvc_test.infrastructure.configuration.auth.TokenJwtConfig;
 import io.jsonwebtoken.Claims;
@@ -20,10 +21,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import static com.msvc_test.infrastructure.configuration.auth.TokenJwtConfig.*;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class JwtValidationFilter extends BasicAuthenticationFilter {
 
@@ -51,12 +49,25 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
 
             String email = claims.getSubject();
             Object roles = claims.get("authorities");
+            String id = claims.get("id", String.class);
+            boolean active = claims.get("active", Boolean.class);
 
             Collection<? extends GrantedAuthority> authorities = Arrays.asList(new ObjectMapper()
                     .addMixIn(SimpleGrantedAuthority.class,SimpleGrantedAuthorityJsonCreator.class)
                     .readValue(roles.toString().getBytes(), SimpleGrantedAuthority[].class));
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
+            CustomUserDetails customUserDetails = new CustomUserDetails(
+                    email,
+                    "",
+                    active,
+                    true,
+                    true,
+                    true,
+                    authorities,
+                    UUID.fromString(id)
+            );
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(customUserDetails, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request,response);
 

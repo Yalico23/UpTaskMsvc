@@ -48,4 +48,10 @@ public class UserEntityAdapter implements UserRepositoryPort {
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
+
+    @Override
+    public Optional<User> findByToken(String token) {
+        return repository.findByToken(token)
+                .map(mapper::toModel);
+    }
 }

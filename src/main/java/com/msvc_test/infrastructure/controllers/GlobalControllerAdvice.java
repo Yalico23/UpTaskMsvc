@@ -1,5 +1,6 @@
 package com.msvc_test.infrastructure.controllers;
 
+import com.msvc_test.domain.exceptions.EmailSendException;
 import com.msvc_test.domain.exceptions.ProjectExistException;
 import com.msvc_test.domain.exceptions.ProjectNotFoundException;
 import com.msvc_test.domain.models.ErrorCatalog;
@@ -35,6 +36,17 @@ public class GlobalControllerAdvice {
         return ErrorResponse.builder()
                 .code(ErrorCatalog.PROJECT_NOT_FOUND.getCode())
                 .message(ErrorCatalog.PROJECT_NOT_FOUND.getMessage())
+                .details(List.of(exception.getMessage()))
+                .timestamp(LocalDate.now())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(EmailSendException.class)
+    public ErrorResponse handleEmailSendException(EmailSendException exception) {
+        return ErrorResponse.builder()
+                .code(ErrorCatalog.EMAIL_SEND_ERROR.getCode())
+                .message(ErrorCatalog.EMAIL_SEND_ERROR.getMessage())
                 .details(List.of(exception.getMessage()))
                 .timestamp(LocalDate.now())
                 .build();

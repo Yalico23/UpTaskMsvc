@@ -16,6 +16,7 @@ public class Project {
     private String clientName;
     private String description;
     private List<Task> tasks;
+    private User user;
 
     public void update(Project project){
         this.projectName = project.getProjectName();

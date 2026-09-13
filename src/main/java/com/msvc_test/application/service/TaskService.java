@@ -1,10 +1,11 @@
 package com.msvc_test.application.service;
 
 import com.msvc_test.domain.models.Task;
-import com.msvc_test.domain.port.input.CreateTaskUseCase;
-import com.msvc_test.domain.port.input.DeleteTaskUseCase;
-import com.msvc_test.domain.port.input.ListTaskUseCase;
-import com.msvc_test.domain.port.input.UpdateTaskUseCase;
+import com.msvc_test.domain.models.TaskStatus;
+import com.msvc_test.domain.port.input.task.CreateTaskUseCase;
+import com.msvc_test.domain.port.input.task.DeleteTaskUseCase;
+import com.msvc_test.domain.port.input.task.ListTaskUseCase;
+import com.msvc_test.domain.port.input.task.UpdateTaskUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,11 @@ public class TaskService implements CreateTaskUseCase, ListTaskUseCase, UpdateTa
     @Override
     public Task updateTask(Task task) {
         return updateTaskUseCase.updateTask(task);
+    }
+
+    @Override
+    public Task updateStatus(Long id, TaskStatus status) {
+        return updateTaskUseCase.updateStatus(id,status);
     }
 
     @Transactional

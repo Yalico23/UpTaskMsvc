@@ -12,4 +12,5 @@ public interface UserRepositoryPort {
     void deleteById(String id);
     List<User> findAll();
     boolean existsByEmail(String email);
+    Optional<User> findByToken(String token);
 }

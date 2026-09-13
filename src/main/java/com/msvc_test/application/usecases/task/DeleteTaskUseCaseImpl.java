@@ -1,7 +1,7 @@
 package com.msvc_test.application.usecases.task;
 
 import com.msvc_test.domain.exceptions.TaskNotFound;
-import com.msvc_test.domain.port.input.DeleteTaskUseCase;
+import com.msvc_test.domain.port.input.task.DeleteTaskUseCase;
 import com.msvc_test.domain.port.output.TaskRepositoryPort;
 import lombok.RequiredArgsConstructor;
 

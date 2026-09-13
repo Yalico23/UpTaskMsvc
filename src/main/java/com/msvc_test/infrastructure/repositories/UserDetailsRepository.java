@@ -1,9 +1,9 @@
 package com.msvc_test.infrastructure.repositories;
 
+import com.msvc_test.infrastructure.configuration.auth.CustomUserDetails;
 import com.msvc_test.infrastructure.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,13 +31,14 @@ public class UserDetailsRepository implements UserDetailsService {
                 .map(rol -> new SimpleGrantedAuthority(rol.getTypeRols().name()))
                 .collect(Collectors.toList());
 
-        return new User(
+        return new CustomUserDetails(
                 userEntity.getEmail(),
                 userEntity.getPassword(),
+                userEntity.isActive(),
                 true,
                 true,
                 true,
-                true,
-                authorities);
+                authorities,
+                userEntity.getId());
     }
 }

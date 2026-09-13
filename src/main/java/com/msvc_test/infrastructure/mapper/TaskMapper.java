@@ -15,6 +15,7 @@ import java.util.List;
 public interface TaskMapper {
 
     @Mapping(target = "project.tasks", ignore = true)
+    @Mapping(target = "project.user", ignore = true)
     Task toModel (TaskEntity taskEntity);
 
     TaskEntity toEntity (Task task);
