@@ -23,6 +23,9 @@ public class ConfirmUserTokenUseCaseImpl implements ConfirmUserTokenUseCase {
     private final EmailExternalPort emailExternalPort;
     private final String frontendUrl;
 
+
+
+
     @Override
     public User confirmTokenUser(String token) {
         if(Objects.isNull(token)){
